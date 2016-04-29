@@ -47,15 +47,15 @@ if [ ! -f "$build_dir/s3fs/s3_built" ]; then
 	#
 	# download
 	#
-	rm -rf /tmp/fuse/
-	mkdir -p /tmp/fuse/
-	curl -s ${fuse_download_url} -o /tmp/fuse/${fuse_archive_filename}
-	tar -xvf /tmp/fuse/${fuse_archive_filename} -C /tmp/fuse
+	rm -rf /app/fuse/
+	mkdir -p /app/fuse/
+	curl -s ${fuse_download_url} -o /app/${fuse_archive_filename}
+	tar -xvf /app/fuse/${fuse_archive_filename} -C /app/fuse
 
-	rm -rf /tmp/s3fs/
-	mkdir -p /tmp/s3fs/
-	curl -s ${s3fs_download_url} -o /tmp/s3fs/${s3fs_archive_filename}
-	tar -xvf /tmp/s3fs/${s3fs_archive_filename} -C /tmp/s3fs
+	rm -rf /app/s3fs/
+	mkdir -p /app/s3fs/
+	curl -s ${s3fs_download_url} -o /app/s3fs/${s3fs_archive_filename}
+	tar -xvf /app/s3fs/${s3fs_archive_filename} -C /app/s3fs
 
 	#
 	# compile
@@ -73,8 +73,8 @@ if [ ! -f "$build_dir/s3fs/s3_built" ]; then
 	export LDFLAGS=-L$build_dir/s3fs/usr/local/lib
 
 	mkdir -pv $build_dir/s3fs
-	cd /tmp/fuse/fuse-${fuse_version_major}.${fuse_version_minor} && ./configure --disable-kernel-module && make -j 2 && make DESTDIR=$build_dir/s3fs install
-	cd /tmp/s3fs/s3fs-fuse-${s3fs_version} && ./autogen.sh && ./configure  && make -j 2 && make DESTDIR=$build_dir/s3fs install
+	cd /app/fuse/fuse-${fuse_version_major}.${fuse_version_minor} && ./configure --disable-kernel-module && make -j 2 && make DESTDIR=$build_dir/s3fs install
+	cd /app/s3fs/s3fs-fuse-${s3fs_version} && ./autogen.sh && ./configure  && make -j 2 && make DESTDIR=$build_dir/s3fs install
 
 	touch $build_dir/s3fs/s3_built
 fi
@@ -108,7 +108,7 @@ if [ -z "\$S3FS_DISABLE_MOUNT" ]; then
         chmod 777 ~/\${S3FS_AWS_MOUNT_POINT}
     fi
 
-    if [ ! -d "\${S3FS_CACHE_DIR:="/tmp/fusecache/s3fs"}" ]; then
+    if [ ! -d "\${S3FS_CACHE_DIR:="/app/fusecache/s3fs"}" ]; then
         echo "Creating a cache dir: \${S3FS_CACHE_DIR}"
         mkdir -pv \${S3FS_CACHE_DIR}
         chmod 777 \${S3FS_CACHE_DIR}
