@@ -44,39 +44,39 @@ export_env_dir $env_dir
 rm -rvf $build_dir/s3fs/s3_built
 if [ ! -f "$build_dir/s3fs/s3_built" ]; then
 
-	#
-	# download
-	#
-	rm -rf /tmp/fuse/
-	mkdir -p /tmp/fuse/
-	curl -s ${fuse_download_url} -o /tmp/${fuse_archive_filename}
-	tar -xvf /tmp/fuse/${fuse_archive_filename} -C /tmp/fuse
+  #
+  # download
+  #
+  rm -rf $build_dir/fuse/
+  mkdir -p $build_dir/fuse/
+  curl -s ${fuse_download_url} -o $build_dir/${fuse_archive_filename}
+  tar -xvf $build_dir/fuse/${fuse_archive_filename} -C $build_dir/fuse
 
-	rm -rf /tmp/s3fs/
-	mkdir -p /tmp/s3fs/
-	curl -s ${s3fs_download_url} -o /tmp/s3fs/${s3fs_archive_filename}
-	tar -xvf /tmp/s3fs/${s3fs_archive_filename} -C /tmp/s3fs
+  rm -rf $build_dir/s3fs/
+  mkdir -p $build_dir/s3fs/
+  curl -s ${s3fs_download_url} -o $build_dir/s3fs/${s3fs_archive_filename}
+  tar -xvf $build_dir/s3fs/${s3fs_archive_filename} -C $build_dir/s3fs
 
-	#
-	# compile
-	#
-	export PREFIX=$build_dir/s3fs
-	export PKG_CONFIG_PATH=$build_dir/s3fs/usr/local/lib/pkgconfig
-	export CFLAGS=-I$build_dir/s3fs/usr/local/include
+  #
+  # compile
+  #
+  export PREFIX=$build_dir/s3fs
+  export PKG_CONFIG_PATH=$build_dir/s3fs/usr/local/lib/pkgconfig
+  export CFLAGS=-I$build_dir/s3fs/usr/local/include
 
-	export LD_LIBRARY_PATH=$build_dir/s3fs/lib:$build_dir/s3fs/usr/local/lib:$build_dir/s3fs/usr/lib:$LD_LIBRARY_PATH
-	export LD_RUN_PATH=$build_dir/s3fs/lib:$build_dir/s3fs/usr/lib:$LD_RUN_PATH
-	export PATH=$build_dir/s3fs/bin:$build_dir/s3fs/usr/bin:$build_dir/s3fs/usr/sbin:$build_dir/s3fs/usr/local/sbin:$build_dir/s3fs/usr/local/bin:$PATH
+  export LD_LIBRARY_PATH=$build_dir/s3fs/lib:$build_dir/s3fs/usr/local/lib:$build_dir/s3fs/usr/lib:$LD_LIBRARY_PATH
+  export LD_RUN_PATH=$build_dir/s3fs/lib:$build_dir/s3fs/usr/lib:$LD_RUN_PATH
+  export PATH=$build_dir/s3fs/bin:$build_dir/s3fs/usr/bin:$build_dir/s3fs/usr/sbin:$build_dir/s3fs/usr/local/sbin:$build_dir/s3fs/usr/local/bin:$PATH
 
-	export CFLAGS=-I$build_dir/s3fs/usr/local/include
-	export CXXFLAGS=-I$build_dir/s3fs/usr/local/include
-	export LDFLAGS=-L$build_dir/s3fs/usr/local/lib
+  export CFLAGS=-I$build_dir/s3fs/usr/local/include
+  export CXXFLAGS=-I$build_dir/s3fs/usr/local/include
+  export LDFLAGS=-L$build_dir/s3fs/usr/local/lib
 
-	mkdir -pv $build_dir/s3fs
-	cd /tmp/fuse/fuse-${fuse_version_major}.${fuse_version_minor} && ./configure --disable-kernel-module && make -j 2 && make DESTDIR=$build_dir/s3fs install
-	cd /tmp/s3fs/s3fs-fuse-${s3fs_version} && ./autogen.sh && ./configure  && make -j 2 && make DESTDIR=$build_dir/s3fs install
+  mkdir -pv $build_dir/s3fs
+  cd $build_dir/fuse/fuse-${fuse_version_major}.${fuse_version_minor} && ./configure --disable-kernel-module && make -j 2 && make DESTDIR=$build_dir/s3fs install
+  cd $build_dir/s3fs/s3fs-fuse-${s3fs_version} && ./autogen.sh && ./configure  && make -j 2 && make DESTDIR=$build_dir/s3fs install
 
-	touch $build_dir/s3fs/s3_built
+  touch $build_dir/s3fs/s3_built
 fi
 
 # Ensure Mount point is set
@@ -108,7 +108,7 @@ if [ -z "\$S3FS_DISABLE_MOUNT" ]; then
         chmod 777 ~/\${S3FS_AWS_MOUNT_POINT}
     fi
 
-    if [ ! -d "\${S3FS_CACHE_DIR:="/tmp/fusecache/s3fs"}" ]; then
+    if [ ! -d "\${S3FS_CACHE_DIR:="$build_dir/fusecache/s3fs"}" ]; then
         echo "Creating a cache dir: \${S3FS_CACHE_DIR}"
         mkdir -pv \${S3FS_CACHE_DIR}
         chmod 777 \${S3FS_CACHE_DIR}
