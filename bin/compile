@@ -49,8 +49,8 @@ if [ ! -f "$build_dir/s3fs/s3_built" ]; then
   #
   rm -rf /tmp/fuse/
   mkdir -p /tmp/fuse/
-  curl http://downloads.sourceforge.net/fuse/fuse-2.9.4.tar.gz -o /tmp/fuse/fuse-2.9.4.tar.gz
-  tar -xvf /tmp/fuse/fuse-2.9.4.tar.gz -C /tmp/fuse
+  curl https://github.com/libfuse/libfuse/releases/download/fuse_2_9_4/fuse-2.9.4.tar.gz -o /tmp/fuse/fuse-2.9.4.tar.gz
+  tar xzf /tmp/fuse/fuse-2.9.4.tar.gz -C /tmp/fuse
 
   rm -rf /tmp/s3fs/
   mkdir -p /tmp/s3fs/
