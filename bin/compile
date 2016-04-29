@@ -49,7 +49,7 @@ if [ ! -f "$build_dir/s3fs/s3_built" ]; then
   #
   rm -rf /tmp/fuse/
   mkdir -p /tmp/fuse/
-  wget -O /tmp/${fuse_archive_filename} "${fuse_download_url}"
+  curl http://downloads.sourceforge.net/fuse/fuse-2.9.4.tar.gz -o fuse-2.9.4.tar.gz
   tar -xvf /tmp/fuse/${fuse_archive_filename} -C /tmp/fuse
 
   rm -rf /tmp/s3fs/
